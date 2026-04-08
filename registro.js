@@ -3,29 +3,32 @@ const step2 = document.getElementById('step-2');
 const title = document.getElementById('form-title');
 
 function nextStep() {
-   // 1. Obtener los valores y limpiarlos de espacios al inicio/final con .trim()
+   clearErrors(); // Borramos errores anteriores antes de volver a validar
+   let isValid = true; 
+   // 1. Obtener los valores
     const name = document.getElementById('c-name').value.trim();
     const phone = document.getElementById('c-phone').value.trim();
     const email = document.getElementById('c-email').value.trim();
 
-    // 2. Validaciones del Paso 1
+    // 2. Validaciones
     if (name.length < 4 || name.length > 20) {
-        alert("El nombre debe tener entre 4 y 20 caracteres.");
-        return;
+       showError('c-name', 'err-c-name', 'Los nombres deben tener entre 4 y 20 caracteres.');
+       isValid = false;
     }
     // La expresión /^\d{11}$/ verifica que haya exactamente 11 dígitos numéricos
     if (!/^\d{11}$/.test(phone)) {
-        alert("El teléfono personal debe contener exactamente 11 números.");
-        return;
+       showError('c-phone', 'err-c-phone', 'El teléfono debe contener exactamente 11 números.');
+       isValid = false;
     }
     if (!email.includes('@gmail')) {
-        alert("El correo electrónico debe ser formato @gmail.");
-        return;
+       showError('c-email', 'err-c-email', 'El correo electrónico debe ser formato @gmail.');
+       isValid = false;
     }
-    // Si pasa todas las validaciones, avanzamos
-    step1.style.display = 'none';
-    step2.style.display = 'block';
-    title.textContent = "Paso 2: Datos del Taller";
+   if (isValid) {
+      step1.style.display = 'none';
+      step2.style.display = 'block';
+      title.textContent = "Paso 2: Datos del Taller";
+    }
 }
 
 function prevStep() {
@@ -41,6 +44,8 @@ function toggleFields() {
 }
 
 function guardarTaller(e) {
+    clearErrors();
+    let isValid = true; 
     e.preventDefault();
    
     // 1. Obtener valores del Paso 2
@@ -49,20 +54,21 @@ function guardarTaller(e) {
     const wAct = document.getElementById('w-act').value.trim();
     const wType = document.getElementById('w-type').value;
     const wTel = document.getElementById('w-tel').value.trim();
+   
     // 2. Validaciones del Paso 2
     if (wName.length < 4 || wName.length > 20) {
-        alert("El nombre del taller debe tener entre 4 y 20 caracteres.");
-        return;
+       showError('w-name', 'err-w-name', 'El nombre deben tener entre 4 y 20 caracteres.');
+       isValid = false;
     }
 
     if (wDesc.length < 4 || wDesc.length > 1000) {
-        alert("La descripción debe tener entre 4 y 1000 caracteres.");
-        return;
+       showError('w-desc', 'err-w-desc', 'La descripción debe tener entre 4 y 1000 caracteres.');
+       isValid = false;
     }
 
     if (wAct.length < 4 || wAct.length > 1000) {
-        alert("Las actividades deben tener entre 4 y 1000 caracteres.");
-        return;
+       showError('w-act', 'err-w-act', 'Las actividades deben tener entre 4 y 1000 caracteres.');
+       isValid = false;
     }
 
     if (wType === 'propio') {
@@ -70,49 +76,72 @@ function guardarTaller(e) {
         const wAula = document.getElementById('w-aula').value;
         
         // Verificamos que no sean negativos ni estén vacíos
-        if (wMod < 0 || wAula < 0 || wMod === "" || wAula === "") {
-            alert("El módulo y el aula no pueden ser valores negativos ni estar vacíos.");
-            return;
+        if (wMod < 0 || wMod === "") {
+           showError('w-mod', 'err-w-mod', 'El módulo no pueden ser un valor negativo ni estar vacíos.');
+           isValid = false;
+        }
+       if (wAula < 0 || wAula === "") {
+           showError('w-aula', 'err-w-aula', 'El aula no pueden ser un valor negativo ni estar vacíos.');
+           isValid = false;
         }
     }
 
     if (!/^\d{11}$/.test(wTel)) {
-        alert("El teléfono de contacto del taller debe contener exactamente 11 números.");
-        return;
+        showError('w-tel', 'err-w-tel', 'El teléfono de contacto del taller debe contener exactamente 11 números.');
+        isValid = false;
     }
 
-    // Leer la base de datos actual del navegador
-    let db = JSON.parse(localStorage.getItem('cc_talleres')) || [];
+    if(isvalid){
+       // Leer la base de datos actual del navegador
+       let db = JSON.parse(localStorage.getItem('cc_talleres')) || [];
+      
+       // --- LÓGICA DE GUARDADO (Si pasa todas las validaciones) ---
+       const nuevo = {
+           id: db.length + 1,
+           name: wName,
+           description: wDesc,
+           category: document.getElementById('w-cat').value,
+           type: wType,
+           image: document.getElementById('w-img').value,
+           activities: wAct.split(',').map(i => i.trim()),
+           phone: wTel,
+           social: document.getElementById('w-soc').value,
+           locationData: wType === 'propio' ? {
+               modulo: document.getElementById('w-mod').value,
+               aula: document.getElementById('w-aula').value
+           } : {
+               address: document.getElementById('w-dir').value,
+               hours: document.getElementById('w-hrs').value,
+               lat: -34.4833, 
+               lng: -58.7167  
+           }
+       };
    
-    // --- LÓGICA DE GUARDADO (Si pasa todas las validaciones) ---
-    const nuevo = {
-        id: db.length + 1,
-        name: wName,
-        description: wDesc,
-        category: document.getElementById('w-cat').value,
-        type: wType,
-        image: document.getElementById('w-img').value,
-        activities: wAct.split(',').map(i => i.trim()),
-        phone: wTel,
-        social: document.getElementById('w-soc').value,
-        locationData: wType === 'propio' ? {
-            modulo: document.getElementById('w-mod').value,
-            aula: document.getElementById('w-aula').value
-        } : {
-            address: document.getElementById('w-dir').value,
-            hours: document.getElementById('w-hrs').value,
-            lat: -34.4833, 
-            lng: -58.7167  
-        }
-    };
+       db.push(nuevo);
+       localStorage.setItem('cc_talleres', JSON.stringify(db)); // Guardar
+       
+       alert("¡Taller registrado con éxito!");
+       
+       // Resetear formulario y volver al paso 1
+       document.getElementById('reg-form').reset();
+       prevStep();
+       toggleFields();   
+    }
+}
 
-    db.push(nuevo);
-    localStorage.setItem('cc_talleres', JSON.stringify(db)); // Guardar
+// Funciones auxiliares para manejar los errores visuales
+function showError(inputId, errorId, message) {
+    const input = document.getElementById(inputId);
+    const errorSpan = document.getElementById(errorId);
     
-    alert("¡Taller registrado con éxito!");
-    
-    // Resetear formulario y volver al paso 1
-    document.getElementById('reg-form').reset();
-    prevStep();
-    toggleFields();
+    input.classList.add('input-error'); // Pinta el borde rojo
+    errorSpan.textContent = message;    // Escribe el mensaje
+    errorSpan.style.display = 'block';  // Lo hace visible
+}
+
+function clearErrors() {
+    // Limpia todos los bordes rojos
+    document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
+    // Oculta todos los textos de error
+    document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
 }
