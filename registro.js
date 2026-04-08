@@ -34,6 +34,19 @@ function nextStep() {
     }
 }
 
+ function prevStep() {
+    step2.style.display = 'none';
+    step1.style.display = 'block';
+    title.textContent = "Paso 1: Datos Personales";
+ }
+
+ function toggleFields() {
+    const isPropio = document.getElementById('w-type').value === 'propio';
+    document.getElementById('fields-propio').style.display = isPropio ? 'block' : 'none';
+    document.getElementById('fields-part').style.display = isPropio ? 'none' : 'block';
+ }
+
+
 function guardarTaller(e) {
     clearErrors();
     let isValid = true; 
@@ -132,18 +145,6 @@ function guardarTaller(e) {
 }
 
  // Funciones auxiliares 
- function prevStep() {
-    step2.style.display = 'none';
-    step1.style.display = 'block';
-    title.textContent = "Paso 1: Datos Personales";
- }
-
- function toggleFields() {
-    const isPropio = document.getElementById('w-type').value === 'propio';
-    document.getElementById('fields-propio').style.display = isPropio ? 'block' : 'none';
-    document.getElementById('fields-part').style.display = isPropio ? 'none' : 'block';
- }
-
  function showError(inputId, errorId, message) {
     const input = document.getElementById(inputId);
     const errorSpan = document.getElementById(errorId);
