@@ -3,10 +3,10 @@ const step2 = document.getElementById('step-2');
 const title = document.getElementById('form-title');
 
 function nextStep() {
-   clearErrors(); // Borramos errores anteriores antes de volver a validar
-   let isValid = true; 
-   const regexCorreo = /^[^\s@]+@gmail\.com$/;
-   // 1. Obtener los valores
+    clearErrors(); // Borramos errores anteriores antes de volver a validar
+    let isValid = true; 
+   
+    // 1. Obtener los valores
     const name = document.getElementById('c-name').value.trim();
     const phone = document.getElementById('c-phone').value.trim();
     const email = document.getElementById('c-email').value.trim();
@@ -21,6 +21,8 @@ function nextStep() {
        showError('c-phone', 'err-c-phone', 'El teléfono debe contener exactamente 11 números.');
        isValid = false;
     }
+
+    const regexCorreo = /^[^\s@]+@gmail\.com$/;
     if (!regexCorreo.test(email)) {
        showError('c-email', 'err-c-email', 'El correo debe ser @gmail.com y tener al menos un carácter antes del @.');
        isValid = false;
@@ -30,18 +32,6 @@ function nextStep() {
       step2.style.display = 'block';
       title.textContent = "Paso 2: Datos del Taller";
     }
-}
-
-function prevStep() {
-    step2.style.display = 'none';
-    step1.style.display = 'block';
-    title.textContent = "Paso 1: Datos Personales";
-}
-
-function toggleFields() {
-    const isPropio = document.getElementById('w-type').value === 'propio';
-    document.getElementById('fields-propio').style.display = isPropio ? 'block' : 'none';
-    document.getElementById('fields-part').style.display = isPropio ? 'none' : 'block';
 }
 
 function guardarTaller(e) {
@@ -88,7 +78,6 @@ function guardarTaller(e) {
         const wMod = document.getElementById('w-mod').value;
         const wAula = document.getElementById('w-aula').value;
         
-        // Verificamos que no sean negativos ni estén vacíos
         if (wMod < 1 || wMod === "") {
            showError('w-mod', 'err-w-mod', 'El módulo no pueden ser un valor negativo ni valor igual a cero.');
            isValid = false;
@@ -142,19 +131,31 @@ function guardarTaller(e) {
     }
 }
 
-// Funciones auxiliares para manejar los errores visuales
-function showError(inputId, errorId, message) {
+ // Funciones auxiliares 
+ function prevStep() {
+    step2.style.display = 'none';
+    step1.style.display = 'block';
+    title.textContent = "Paso 1: Datos Personales";
+ }
+
+ function toggleFields() {
+    const isPropio = document.getElementById('w-type').value === 'propio';
+    document.getElementById('fields-propio').style.display = isPropio ? 'block' : 'none';
+    document.getElementById('fields-part').style.display = isPropio ? 'none' : 'block';
+ }
+
+ function showError(inputId, errorId, message) {
     const input = document.getElementById(inputId);
     const errorSpan = document.getElementById(errorId);
     
     input.classList.add('input-error'); // Pinta el borde rojo
     errorSpan.textContent = message;    // Escribe el mensaje
     errorSpan.style.display = 'block';  // Lo hace visible
-}
+ }
 
-function clearErrors() {
+ function clearErrors() {
     // Limpia todos los bordes rojos
     document.querySelectorAll('.input-error').forEach(el => el.classList.remove('input-error'));
     // Oculta todos los textos de error
     document.querySelectorAll('.error-msg').forEach(el => el.style.display = 'none');
-}
+ }
