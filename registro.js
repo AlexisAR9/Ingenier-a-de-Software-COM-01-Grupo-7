@@ -60,7 +60,8 @@ function guardarTaller(e) {
     const wType = document.getElementById('w-type').value;
     const wTel = document.getElementById('w-tel').value.trim();
     const wCat = document.getElementById('w-cat').value;
-   
+    const wSoc = document.getElementById('w-soc').value;
+    
     // 2. Validaciones del Paso 2
     if(wImg === "") {
        showError('w-img', 'err-w-img', 'Por favor, ingresa la URL de una foto.');
@@ -105,6 +106,11 @@ function guardarTaller(e) {
         showError('w-tel', 'err-w-tel', 'El teléfono de contacto del taller debe contener exactamente 11 números.');
         isValid = false;
     }
+    
+    if (wSoc === "") {
+        showError('w-soc', 'err-w-soc', 'El teléfono de contacto del taller debe contener exactamente 11 números.');
+        isValid = false;
+    }
 
     if(isValid){
        // Leer la base de datos actual del navegador
@@ -120,7 +126,7 @@ function guardarTaller(e) {
            image: wImg,
            activities: wAct.split(',').map(i => i.trim()),
            phone: wTel,
-           social: document.getElementById('w-soc').value,
+           social: wSoc,
            locationData: wType === 'propio' ? {
                modulo: document.getElementById('w-mod').value,
                aula: document.getElementById('w-aula').value
