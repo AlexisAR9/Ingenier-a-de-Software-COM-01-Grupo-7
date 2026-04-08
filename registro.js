@@ -91,7 +91,7 @@ function guardarTaller(e) {
         isValid = false;
     }
 
-    if(isvalid){
+    if(isValid){
        // Leer la base de datos actual del navegador
        let db = JSON.parse(localStorage.getItem('cc_talleres')) || [];
       
