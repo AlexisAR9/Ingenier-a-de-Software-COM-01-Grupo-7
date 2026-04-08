@@ -42,10 +42,7 @@ function toggleFields() {
 
 function guardarTaller(e) {
     e.preventDefault();
-    
-    // Leer la base de datos actual del navegador
-    let db = JSON.parse(localStorage.getItem('cc_talleres')) || [];
-
+   
     // 1. Obtener valores del Paso 2
     const wName = document.getElementById('w-name').value.trim();
     const wDesc = document.getElementById('w-desc').value.trim();
@@ -84,6 +81,9 @@ function guardarTaller(e) {
         return;
     }
 
+    // Leer la base de datos actual del navegador
+    let db = JSON.parse(localStorage.getItem('cc_talleres')) || [];
+   
     // --- LÓGICA DE GUARDADO (Si pasa todas las validaciones) ---
     const nuevo = {
         id: db.length + 1,
