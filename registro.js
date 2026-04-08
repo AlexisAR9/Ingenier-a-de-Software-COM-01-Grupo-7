@@ -3,9 +3,26 @@ const step2 = document.getElementById('step-2');
 const title = document.getElementById('form-title');
 
 function nextStep() {
-    if(!document.getElementById('c-name').value || !document.getElementById('c-email').value) {
-        alert("Llena nombre y correo para continuar"); return;
+   // 1. Obtener los valores y limpiarlos de espacios al inicio/final con .trim()
+    const name = document.getElementById('c-name').value.trim();
+    const phone = document.getElementById('c-phone').value.trim();
+    const email = document.getElementById('c-email').value.trim();
+
+    // 2. Validaciones del Paso 1
+    if (name.length < 4 || name.length > 20) {
+        alert("El nombre debe tener entre 4 y 20 caracteres.");
+        return;
     }
+    // La expresión /^\d{11}$/ verifica que haya exactamente 11 dígitos numéricos
+    if (!/^\d{11}$/.test(phone)) {
+        alert("El teléfono personal debe contener exactamente 11 números.");
+        return;
+    }
+    if (!email.includes('@gmail')) {
+        alert("El correo electrónico debe ser formato @gmail.");
+        return;
+    }
+    // Si pasa todas las validaciones, avanzamos
     step1.style.display = 'none';
     step2.style.display = 'block';
     title.textContent = "Paso 2: Datos del Taller";
@@ -28,26 +45,64 @@ function guardarTaller(e) {
     
     // Leer la base de datos actual del navegador
     let db = JSON.parse(localStorage.getItem('cc_talleres')) || [];
-    
-    const tipo = document.getElementById('w-type').value;
+
+    // 1. Obtener valores del Paso 2
+    const wName = document.getElementById('w-name').value.trim();
+    const wDesc = document.getElementById('w-desc').value.trim();
+    const wAct = document.getElementById('w-act').value.trim();
+    const wType = document.getElementById('w-type').value;
+    const wTel = document.getElementById('w-tel').value.trim();
+    // 2. Validaciones del Paso 2
+    if (wName.length < 4 || wName.length > 20) {
+        alert("El nombre del taller debe tener entre 4 y 20 caracteres.");
+        return;
+    }
+
+    if (wDesc.length < 4 || wDesc.length > 1000) {
+        alert("La descripción debe tener entre 4 y 1000 caracteres.");
+        return;
+    }
+
+    if (wAct.length < 4 || wAct.length > 1000) {
+        alert("Las actividades deben tener entre 4 y 1000 caracteres.");
+        return;
+    }
+
+    if (wType === 'propio') {
+        const wMod = document.getElementById('w-mod').value;
+        const wAula = document.getElementById('w-aula').value;
+        
+        // Verificamos que no sean negativos ni estén vacíos
+        if (wMod < 0 || wAula < 0 || wMod === "" || wAula === "") {
+            alert("El módulo y el aula no pueden ser valores negativos ni estar vacíos.");
+            return;
+        }
+    }
+
+    if (!/^\d{11}$/.test(wTel)) {
+        alert("El teléfono de contacto del taller debe contener exactamente 11 números.");
+        return;
+    }
+
+    // --- LÓGICA DE GUARDADO (Si pasa todas las validaciones) ---
     const nuevo = {
         id: db.length + 1,
-        name: document.getElementById('w-name').value,
-        description: document.getElementById('w-desc').value,
+        name: wName,
+        description: wDesc,
         category: document.getElementById('w-cat').value,
-        type: tipo,
+        type: wType,
         image: document.getElementById('w-img').value,
-        activities: document.getElementById('w-act').value.split(',').map(i => i.trim()),
-        phone: document.getElementById('w-tel').value,
+        activities: wAct.split(',').map(i => i.trim()),
+        phone: wTel,
         social: document.getElementById('w-soc').value,
-        locationData: tipo === 'propio' ? {
+        locationData: wType === 'propio' ? {
             modulo: document.getElementById('w-mod').value,
             aula: document.getElementById('w-aula').value
         } : {
             address: document.getElementById('w-dir').value,
             hours: document.getElementById('w-hrs').value,
-            lat: -34.4833, // Simulador de latitud
-            lng: -58.7167  // Simulador de longitud
+            lat: -34.4833, 
+            lng: -58.7167  
         }
     };
 
