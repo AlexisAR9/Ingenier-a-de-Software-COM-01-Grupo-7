@@ -5,6 +5,7 @@ const title = document.getElementById('form-title');
 function nextStep() {
    clearErrors(); // Borramos errores anteriores antes de volver a validar
    let isValid = true; 
+   const regexCorreo = /^[^\s@]+@gmail\.com$/;
    // 1. Obtener los valores
     const name = document.getElementById('c-name').value.trim();
     const phone = document.getElementById('c-phone').value.trim();
@@ -20,8 +21,8 @@ function nextStep() {
        showError('c-phone', 'err-c-phone', 'El teléfono debe contener exactamente 11 números.');
        isValid = false;
     }
-    if (!email.includes('@gmail')) {
-       showError('c-email', 'err-c-email', 'El correo electrónico debe ser formato @gmail.');
+    if (!regexCorreo.test(email)) {
+       showError('c-email', 'err-c-email', 'El correo debe ser @gmail.com y tener al menos un carácter antes del @.');
        isValid = false;
     }
    if (isValid) {
@@ -49,13 +50,20 @@ function guardarTaller(e) {
     e.preventDefault();
    
     // 1. Obtener valores del Paso 2
+    const wImg = document.getElementById('w-img').value.trim();
     const wName = document.getElementById('w-name').value.trim();
     const wDesc = document.getElementById('w-desc').value.trim();
     const wAct = document.getElementById('w-act').value.trim();
     const wType = document.getElementById('w-type').value;
     const wTel = document.getElementById('w-tel').value.trim();
+    const wCat = document.getElementById('w-cat').value;
    
     // 2. Validaciones del Paso 2
+    if(wImg === "") {
+       showError('w-img', 'err-w-img', 'Por favor, ingresa la URL de una foto.');
+       isValid = false;
+    }
+   
     if (wName.length < 4 || wName.length > 20) {
        showError('w-name', 'err-w-name', 'El nombre deben tener entre 4 y 20 caracteres.');
        isValid = false;
@@ -71,17 +79,22 @@ function guardarTaller(e) {
        isValid = false;
     }
 
+    if (wCat === ""){
+       showError('w-cat', 'err-w-cat', 'Por favor, seleccione una opción de la lista.');
+       isValid = false;
+    }
+
     if (wType === 'propio') {
         const wMod = document.getElementById('w-mod').value;
         const wAula = document.getElementById('w-aula').value;
         
         // Verificamos que no sean negativos ni estén vacíos
-        if (wMod < 0 || wMod === "") {
-           showError('w-mod', 'err-w-mod', 'El módulo no pueden ser un valor negativo ni estar vacíos.');
+        if (wMod < 1 || wMod === "") {
+           showError('w-mod', 'err-w-mod', 'El módulo no pueden ser un valor negativo ni valor igual a cero.');
            isValid = false;
         }
-       if (wAula < 0 || wAula === "") {
-           showError('w-aula', 'err-w-aula', 'El aula no pueden ser un valor negativo ni estar vacíos.');
+       if (wAula < 1 || wAula === "") {
+           showError('w-aula', 'err-w-aula', 'El aula no pueden ser un valor negativo ni valor igual a cero.');
            isValid = false;
         }
     }
@@ -102,7 +115,7 @@ function guardarTaller(e) {
            description: wDesc,
            category: document.getElementById('w-cat').value,
            type: wType,
-           image: document.getElementById('w-img').value,
+           image: wImg,
            activities: wAct.split(',').map(i => i.trim()),
            phone: wTel,
            social: document.getElementById('w-soc').value,
