@@ -23,19 +23,19 @@
             <form id="reg-form" onsubmit="guardarTaller(event)">
                 
                 <div id="step-1">
-                    <div class="form-group"><label>Nombre:</label><input type="text" id="c-name" required></div>
-                    <div class="form-group"><label>Teléfono:</label><input type="text" id="c-phone" required></div>
-                    <div class="form-group"><label>Correo:</label><input type="email" id="c-email" required></div>
+                    <div class="form-group"><label>Nombre:</label><input type="text" id="c-name"><span class="error-msg" id="err-c-name"></span></div>
+                    <div class="form-group"><label>Teléfono:</label><input type="text" id="c-phone"><span class="error-msg" id="err-c-phone"></span></div>
+                    <div class="form-group"><label>Correo:</label><input type="email" id="c-email"><span class="error-msg" id="err-c-email"></span></div>
                     <button type="button" class="btn" onclick="nextStep()">Siguiente ➔</button>
                 </div>
 
                 <div id="step-2" style="display: none;">
                     <div class="form-group"><label>Foto URL:</label><input type="url" id="w-img" required></div>
-                    <div class="form-group"><label>Nombre del Taller:</label><input type="text" id="w-name" required>
+                    <div class="form-group"><label>Nombre del Taller:</label><input type="text" id="w-name"><span class="error-msg" id="err-w-name"></span>
                     </div>
-                    <div class="form-group"><label>Descripción:</label><textarea id="w-desc" required></textarea></div>
+                    <div class="form-group"><label>Descripción:</label><textarea id="w-desc" ></textarea><span class="error-msg" id="err-w-desc"></span></div>
                     <div class="form-group"><label>Actividades (separadas por coma):</label><input type="text"
-                            id="w-act" required></div>
+                            id="w-act"><span class="error-msg" id="err-w-act"></span></div>
 
                     <div class="form-group">
                         <label>Rubro:</label>
@@ -56,8 +56,8 @@
                     </div>
 
                     <div id="fields-propio" class="cond-box">
-                        <div class="form-group"><label>Módulo:</label><input type="number" id="w-mod"></div>
-                        <div class="form-group"><label>Aula:</label><input type="number" id="w-aula"></div>
+                        <div class="form-group"><label>Módulo:</label><input type="number" id="w-mod"><span class="error-msg" id="err-w-mod"></span></div>
+                        <div class="form-group"><label>Aula:</label><input type="number" id="w-aula"><span class="error-msg" id="err-w-aula"></span></div>
                     </div>
 
                     <div id="fields-part" class="cond-box" style="display:none;">
@@ -65,7 +65,7 @@
                         <div class="form-group"><label>Horarios:</label><input type="text" id="w-hrs"></div>
                     </div>
 
-                    <div class="form-group"><label>Teléfono Contacto:</label><input type="text" id="w-tel" required>
+                    <div class="form-group"><label>Teléfono Contacto:</label><input type="text" id="w-tel"><span class="error-msg" id="err-w-tel"></span>
                     </div>
                     <div class="form-group"><label>Redes Sociales:</label><input type="text" id="w-soc" required></div>
 
