@@ -103,12 +103,12 @@ function guardarTaller(e) {
     }
 
     if (!/^\d{11}$/.test(wTel)) {
-        showError('w-tel', 'err-w-tel', 'El teléfono de contacto del taller debe contener exactamente 11 números.');
+        showError('w-tel', 'err-w-tel', 'El teléfono debe contener exactamente 11 números.');
         isValid = false;
     }
     
     if (wSoc === "") {
-        showError('w-soc', 'err-w-soc', 'El teléfono de contacto del taller debe contener exactamente 11 números.');
+        showError('w-soc', 'err-w-soc', 'Debe indicar su red social.');
         isValid = false;
     }
 
