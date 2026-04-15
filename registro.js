@@ -111,35 +111,63 @@ function guardarTaller(e) {
         showError('w-soc', 'err-w-soc', 'Debe indicar su red social.');
         isValid = false;
     }
+    
+    if (isValid) {
+        let latFinal = -34.5231018;
+        let lngFinal = -58.7030525;
+        let dirFinal = "Universidad Nacional de General Sarmiento";
 
-    if(isValid){
-       // Leer la base de datos actual del navegador
-       let db = JSON.parse(localStorage.getItem('cc_talleres')) || [];
-      
-       // --- LÓGICA DE GUARDADO (Si pasa todas las validaciones) ---
-       const nuevo = {
-           id: db.length + 1,
-           name: wName,
-           description: wDesc,
-           category: document.getElementById('w-cat').value,
-           type: wType,
-           image: wImg,
-           activities: wAct.split(',').map(i => i.trim()),
-           phone: wTel,
-           social: wSoc,
-           locationData: wType === 'propio' ? {
-               modulo: document.getElementById('w-mod').value,
-               aula: document.getElementById('w-aula').value
-           } : {
-               address: document.getElementById('w-dir').value,
-               hours: document.getElementById('w-hrs').value,
-               lat: -34.4833, 
-               lng: -58.7167  
-           }
-       };
-   
+        // 1. Normalización con USIG (Solo si es particular)
+        if (wType === 'particular') {
+            const wDir = document.getElementById('w-dir').value.trim();
+            dirFinal = wDir; // Por si falla USIG, guardamos lo que escribió el usuario
+
+            try {
+                const url = `https://servicios.usig.buenosaires.gob.ar/normalizar/?direccion=${encodeURIComponent(wDir)}`;
+                const res = await fetch(url);
+                const data = await res.json();
+
+                if (data.direccionesNormalizadas && data.direccionesNormalizadas.length > 0) {
+                    latFinal = parseFloat(data.direccionesNormalizadas[0].coordenadas.y);
+                    lngFinal = parseFloat(data.direccionesNormalizadas[0].coordenadas.x);
+                    dirFinal = data.direccionesNormalizadas[0].direccion; // Dirección oficial
+                } else {
+                    alert("Aviso: USIG no reconoció la dirección exacta. Se guardará tal como la escribiste.");
+                }
+            } catch (error) {
+                console.error("Error conectando con USIG al registrar:", error);
+            }
+        }
+
+        let db = JSON.parse(localStorage.getItem('cc_talleres')) || [];
+        const nuevoTaller = {
+            name: wName,
+            description: wDesc,
+            category: wCat,
+            type: wType,
+            image: wImgUrl,
+            activities: wAct.split(',').map(i => i.trim()),
+            phone: wTel,
+            social: document.getElementById('w-soc').value,
+            locationData: wType === 'propio' ? {
+                // parseInt asegura que enviamos números, no texto, a la BD
+                modulo: parseInt(document.getElementById('w-mod').value) || null,
+                aula: parseInt(document.getElementById('w-aula').value) || null,
+                address: dirFinal,
+                lat: latFinal,
+                lng: lngFinal
+                //lat: -34.4833,
+                //lng: -58.7167
+            } : {
+                address: dirFinal,
+                hours: document.getElementById('w-hrs').value,
+                lat: latFinal,
+                lng: lngFinal
+            }
+        };
+        
        db.push(nuevo);
-       localStorage.setItem('cc_talleres', JSON.stringify(db)); // Guardar
+       localStorage.setItem('cc_talleres', JSON.stringify(db)); 
        
        alert("¡Taller registrado con éxito!");
        
@@ -147,7 +175,6 @@ function guardarTaller(e) {
        document.getElementById('reg-form').reset();
        prevStep();
        toggleFields();   
-    }
 }
 
  // Funciones auxiliares 
