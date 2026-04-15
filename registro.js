@@ -123,11 +123,10 @@ async function guardarTaller(e) {
             dirFinal = wDir; // Por si falla USIG, guardamos lo que escribió el usuario
 
             try {
-                //const url = `https://servicios.usig.buenosaires.gob.ar/normalizar/?direccion=${wDir}`;
-                const url = `https://apis.datos.gob.ar/georef/api/direcciones?direccion=${wDir}`;
+                const url = `https://servicios.usig.buenosaires.gob.ar/normalizar/?direccion=${wDir}`;
                 const res = await fetch(url);
                 const data = await res.json();
-
+                
                 if (data.direccionesNormalizadas && data.direccionesNormalizadas.length > 0) {
                     latFinal = parseFloat(data.direccionesNormalizadas[0].coordenadas.y);
                     lngFinal = parseFloat(data.direccionesNormalizadas[0].coordenadas.x);
