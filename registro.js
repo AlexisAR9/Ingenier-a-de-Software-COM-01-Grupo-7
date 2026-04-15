@@ -140,7 +140,7 @@ async function guardarTaller(e) {
         }
 
         let db = JSON.parse(localStorage.getItem('cc_talleres')) || [];
-        const nuevoTaller = {
+        const nuevo = {
             name: wName,
             description: wDesc,
             category: wCat,
