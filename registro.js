@@ -145,7 +145,7 @@ async function guardarTaller(e) {
             description: wDesc,
             category: wCat,
             type: wType,
-            image: wImgUrl,
+            image: wImg,
             activities: wAct.split(',').map(i => i.trim()),
             phone: wTel,
             social: document.getElementById('w-soc').value,
