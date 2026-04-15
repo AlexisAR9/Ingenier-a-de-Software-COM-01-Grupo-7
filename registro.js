@@ -156,15 +156,13 @@ async function guardarTaller(e) {
                 address: dirFinal,
                 lat: latFinal,
                 lng: lngFinal
-                //lat: -34.4833,
-                //lng: -58.7167
             } : {
                 address: dirFinal,
                 hours: document.getElementById('w-hrs').value,
                 lat: latFinal,
                 lng: lngFinal
             }
-        };
+         };
         
        db.push(nuevo);
        localStorage.setItem('cc_talleres', JSON.stringify(db)); 
