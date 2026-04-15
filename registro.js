@@ -47,7 +47,7 @@ function nextStep() {
  }
 
 
-function guardarTaller(e) {
+async function guardarTaller(e) {
     clearErrors();
     let isValid = true; 
     e.preventDefault();
