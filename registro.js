@@ -175,6 +175,7 @@ function guardarTaller(e) {
        document.getElementById('reg-form').reset();
        prevStep();
        toggleFields();   
+     }
 }
 
  // Funciones auxiliares 
