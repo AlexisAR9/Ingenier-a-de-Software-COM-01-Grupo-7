@@ -123,7 +123,7 @@ async function guardarTaller(e) {
             dirFinal = wDir; // Por si falla USIG, guardamos lo que escribió el usuario
 
             try {
-                const url = `https://servicios.usig.buenosaires.gob.ar/normalizar/?direccion=${encodeURIComponent(wDir)}`;
+                const url = `https://servicios.usig.buenosaires.gob.ar/normalizar/?direccion=${wDir}`;
                 const res = await fetch(url);
                 const data = await res.json();
 
