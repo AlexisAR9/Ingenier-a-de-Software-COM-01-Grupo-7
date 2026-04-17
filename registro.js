@@ -17,8 +17,8 @@ function nextStep() {
        isValid = false;
     }
     
-    if (!/^\d{1,19}$/.test(phone)) {
-       showError('c-phone', 'err-c-phone', 'Debe ingresar un numero de teléfono');
+    if (!/^\d{5,19}$/.test(phone)) {
+       showError('c-phone', 'err-c-phone', 'Debe ingresar un numero de teléfono (5-19 digitos)');
        isValid = false;
     }
 
@@ -63,10 +63,10 @@ async function guardarTaller(e) {
     const wSoc = document.getElementById('w-soc').value;
     
     // 2. Validaciones del Paso 2
-    if(wImg === "") {
+    /*if(wImg === "") {
        showError('w-img', 'err-w-img', 'Por favor, ingresa la URL de una foto.');
        isValid = false;
-    }
+    }*/
    
     if (wName.length < 4 || wName.length > 20) {
        showError('w-name', 'err-w-name', 'El nombre deben tener entre 4 y 20 caracteres.');
@@ -91,19 +91,39 @@ async function guardarTaller(e) {
     if (wType === 'propio') {
         const wMod = document.getElementById('w-mod').value;
         const wAula = document.getElementById('w-aula').value;
+        const whrs = document.getElementById('w-hrs').value;
         
         if (wMod < 1 || wMod === "") {
-           showError('w-mod', 'err-w-mod', 'El módulo no pueden ser un valor negativo ni valor igual a cero.');
+           showError('w-mod', 'err-w-mod', 'El módulo debe ser mayor o igual a 1.');
            isValid = false;
         }
        if (wAula < 1 || wAula === "") {
-           showError('w-aula', 'err-w-aula', 'El aula no pueden ser un valor negativo ni valor igual a cero.');
+           showError('w-aula', 'err-w-aula', 'El aula debe ser mayor o igual a 1.');
            isValid = false;
         }
+       if (whrs === ""){
+           showError('w-hrs', 'err-w-hrs', 'Ingrese un horario.');
+           isValid = false;
+       }
     }
 
-    if (!/^\d{1,19}$/.test(wTel)) {
-        showError('w-tel', 'err-w-tel', 'Debe ingresar un numero de teléfono');
+    if (wType === 'Particular') {
+        const wdir = document.getElementById('w-dir').value;
+        const whrs = document.getElementById('w-hrs').value;
+        
+        if (wdir  === "") {
+           showError('w-dir', 'err-w-dir', 'Ingrese una dirección');
+           isValid = false;
+        }
+        if (whrs === ""){
+           showError('w-hrs', 'err-w-hrs', 'Ingrese un horario.');
+           isValid = false;
+       }
+    }
+        
+
+    if (!/^\d{5,19}$/.test(wTel)) {
+        showError('w-tel', 'err-w-tel', 'Debe ingresar un numero de teléfono (5-19 digitos)');
         isValid = false;
     }
     
