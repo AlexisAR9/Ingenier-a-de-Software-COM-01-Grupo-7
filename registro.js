@@ -17,7 +17,7 @@ function nextStep() {
        isValid = false;
     }
     
-    if (phone.toString().length > 0) {
+    if (!/^\d{1,19}$/.test(phone)) {
        showError('c-phone', 'err-c-phone', 'Debe ingresar un numero de teléfono');
        isValid = false;
     }
@@ -102,7 +102,7 @@ async function guardarTaller(e) {
         }
     }
 
-    if (wTel.toString().length > 0) {
+    if (!/^\d{1,19}$/.test(wTel)) {
         showError('w-tel', 'err-w-tel', 'Debe ingresar un numero de teléfono');
         isValid = false;
     }
