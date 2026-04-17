@@ -63,11 +63,6 @@ async function guardarTaller(e) {
     const wSoc = document.getElementById('w-soc').value;
     
     // 2. Validaciones del Paso 2
-    /*if(wImg === "") {
-       showError('w-img', 'err-w-img', 'Por favor, ingresa la URL de una foto.');
-       isValid = false;
-    }*/
-   
     if (wName.length < 4 || wName.length > 20) {
        showError('w-name', 'err-w-name', 'El nombre deben tener entre 4 y 20 caracteres.');
        isValid = false;
@@ -107,7 +102,7 @@ async function guardarTaller(e) {
        }
     }
 
-    if (wType === 'Particular') {
+    if (wType === 'particular') {
         const wdir = document.getElementById('w-dir').value;
         const whrs = document.getElementById('w-hrs').value;
         
