@@ -106,11 +106,11 @@ async function guardarTaller(e) {
         const wdir = document.getElementById('w-dir').value;
         const whrs = document.getElementById('w-hrs').value;
         
-        if (wdir  === "") {
+       if (wdir  === "") {
            showError('w-dir', 'err-w-dir', 'Ingrese una dirección');
            isValid = false;
         }
-        if (whrs === ""){
+       if (whrs === ""){
            showError('w-hrs', 'err-w-hrs', 'Ingrese un horario.');
            isValid = false;
        }
