@@ -154,6 +154,7 @@ async function guardarTaller(e) {
                 modulo: parseInt(document.getElementById('w-mod').value) || null,
                 aula: parseInt(document.getElementById('w-aula').value) || null,
                 address: dirFinal,
+                hours: document.getElementById('w-hrs').value,
                 lat: latFinal,
                 lng: lngFinal
             } : {
