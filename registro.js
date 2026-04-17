@@ -16,9 +16,9 @@ function nextStep() {
        showError('c-name', 'err-c-name', 'Los nombres deben tener entre 4 y 20 caracteres.');
        isValid = false;
     }
-    // La expresión /^\d{11}$/ verifica que haya exactamente 11 dígitos numéricos
-    if (!/^\d{11}$/.test(phone)) {
-       showError('c-phone', 'err-c-phone', 'El teléfono debe contener exactamente 11 números.');
+    
+    if (phone.toString().length > 0) {
+       showError('c-phone', 'err-c-phone', 'Debe ingresar un numero de teléfono');
        isValid = false;
     }
 
@@ -102,8 +102,8 @@ async function guardarTaller(e) {
         }
     }
 
-    if (!/^\d{11}$/.test(wTel)) {
-        showError('w-tel', 'err-w-tel', 'El teléfono debe contener exactamente 11 números.');
+    if (wTel.toString().length > 0) {
+        showError('w-tel', 'err-w-tel', 'Debe ingresar un numero de teléfono');
         isValid = false;
     }
     
