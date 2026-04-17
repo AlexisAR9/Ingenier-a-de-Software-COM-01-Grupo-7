@@ -97,7 +97,7 @@ async function guardarTaller(e) {
            isValid = false;
         }
        if (whrs === ""){
-           showError('w-hrs', 'err-w-hrs', 'Ingrese un horario.');
+           showError('w-hrs1', 'err-w-hrs1', 'Ingrese un horario.');
            isValid = false;
        }
     }
